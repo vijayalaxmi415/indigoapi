@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
     <apikit:config name="indigoapi-config" api="indigoapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ff3d1eb2-a88e-49a7-abcc-cf22c1a47c96" >
-		<http:listener-connection host="0.0.0.0" port="8081" />
-	</http:listener-config>
-	<flow name="indigoapi-main">
+    <flow name="indigoapi-main">
         <http:listener path="/indigo/api/*" config-ref="HTTP_Listener_config">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
@@ -97,50 +94,13 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\indigoFlights:indigoapi-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-[
-  {
-    ID: 101,
-    airline: "Indigo",
-    flightCode: "IND101",
-    fromAirportCode: "BLR",
-    toAirportCode: "DEL",
-    departureDate: "30-Jan-2021",
-    emptySeats: 0,
-    totalSeats: 200,
-    price: 199,
-    planeType: "Indigo 737"
-  }, 
-  {
-    ID: 102,
-    airline: "Indigo",
-    flightCode: "IND102",
-    fromAirportCode: "BLR",
-    toAirportCode: "DEL",
-    departureDate: "30-Jan-2021",
-    emptySeats: 24,
-    totalSeats: 350,
-    price: 450,
-    planeType: "Indigo 747"
-  }, 
-  {
-    ID: 103,
-    airline: "Indigo",
-    flightCode: "IND103",
-    fromAirportCode: "BLR",
-    toAirportCode: "DEL",
-    departureDate: "30-Jan-2021",
-    emptySeats: 33,
-    totalSeats: 400,
-    price: 450,
-    planeType: "Indigo 757"
-  }
-]]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="705e064c-ff3d-4e3d-be21-353c5d3715d6" message="Request received by indigoFlights...........#[attributes.queryParams]"/>
+		<flow-ref doc:name="IndigoFlightsFlow" doc:id="3b06fb18-370a-421a-b2d0-01d866d20c14" name="IndigoFlightsFlow"/>
+		<logger level="INFO" doc:name="Logger" doc:id="e0033b56-0fee-4de0-a60c-f1d3b14204a4" message="finial output..................#[payload]"/>
+    </flow>
+    <flow name="get:\indigoFlights\(source)\(destination)\(doj):indigoapi-config">
+        <logger level="INFO" doc:name="Logger" doc:id="0752b98e-c919-4d34-b750-90b193ca25c1" message="Request received by indigoFlights by uriparams...........#[attributes.queryParams]"/>
+		<flow-ref doc:name="IndigoFlightsbyuriparamsFlow" doc:id="3a2c549a-2b19-4ec8-ac19-12663f75a068" name="IndigoFlightsbyuriparamsFlow"/>
+		<logger level="INFO" doc:name="Logger" doc:id="6a541c7a-15c0-4f9e-bb3b-dc8383c6556c" message="finial output..................#[payload]"/>
     </flow>
 </mule>

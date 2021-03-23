@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<flow name="IndigoFlightsbyuriparamsFlow" doc:id="95549d61-e32e-459e-997e-bc5da5cee4d6" >
+		<logger level="INFO" doc:name="Logger" doc:id="2443305e-c5a9-4718-a15d-5c453e9a2637" message="Request received by indigoFlights...........#[attributes.queryParams]"/>
+		<http:request method="GET" doc:name="Request" doc:id="3915c3d2-08d3-41ea-8f2a-0781e6481e56" path="api/getFlights" config-ref="HTTP_Request_configuration">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	from : attributes.uriParams.source,
+	to : attributes.uriParams.destination,
+	departureDate : attributes.uriParams.doj
+}]]]></http:query-params>
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="6017292e-ea42-486e-b9d8-44f39147b232" message="Request received from indigoAirlines...............#[payload]"/>
+	</flow>
+	</mule>

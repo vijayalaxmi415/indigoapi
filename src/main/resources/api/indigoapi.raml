@@ -53,3 +53,49 @@ title: Indigoapi
                             "planeType": "Indigo 757"
                         }
                     ]
+  /{source}/{destination}/{doj}:
+    get:
+         
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                        [
+                          {
+                              "ID": 101,
+                              "airline": "Indigo",
+                              "flightCode": "IND101",
+                              "fromAirportCode": "BLR",
+                              "toAirportCode": "DEL",
+                              "departureDate": "30-Jan-2021",
+                              "emptySeats": 0,
+                              "totalSeats": 200,
+                              "price": 199,
+                              "planeType": "Indigo 737"
+                          },
+                          {
+                              "ID": 102,
+                              "airline": "Indigo",
+                              "flightCode": "IND102",
+                              "fromAirportCode": "BLR",
+                              "toAirportCode": "DEL",
+                              "departureDate": "30-Jan-2021",
+                              "emptySeats": 24,
+                              "totalSeats": 350,
+                              "price": 450,
+                              "planeType": "Indigo 747"
+                          },
+                          {
+                              "ID": 103,
+                              "airline": "Indigo",
+                              "flightCode": "IND103",
+                              "fromAirportCode": "BLR",
+                              "toAirportCode": "DEL",
+                              "departureDate": "30-Jan-2021",
+                              "emptySeats": 33,
+                              "totalSeats": 400,
+                              "price": 450,
+                              "planeType": "Indigo 757"
+                          }
+                      ]
